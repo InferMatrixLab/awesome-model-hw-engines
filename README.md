@@ -144,6 +144,12 @@
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | 同上；Ascend 950 路径（与 NVIDIA SM100 双硬件） | https://github.com/deepseek-ai/DeepInfer |
 
+### Apple-Metal
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ☄️ | **incoai/splash** | Mac Apple Silicon 本地专用推理引擎（相对 mlx-serve 的极致优化）：DFlash 投机解码 + SSD Expert Offload + Prefix Cache；面向 Qwen Flash-Next 等 | https://github.com/incoai/splash |
+
 ### CPU-RAM-SSD tier
 
 > **Strata 类：** 「Strata」在本仓主要指 [Niko1221/Strata](https://github.com/Niko1221/Strata)——为特定大 MoE（如 Qwen3.8-Flash-Next）在消费级 PC 上做的 **VRAM / 系统 RAM / SSD 分层 + CPU 并行计算未缓存专家** 的专用引擎。同方法族还包括将该思路泛化到更多 MoE、或做专家主机/SSD 卸载与 CPU–GPU 协同的实现。若存在同名歧义项目，**以本表链接与一句话为准**。
