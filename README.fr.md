@@ -5,207 +5,277 @@
 
 **Languages:** [English](README.en.md) · [中文](README.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Français](README.fr.md) · [Español](README.es.md)
 
-> **Moteurs d'inférence spécialisés modèle × matériel** · specialized backends · not a general serving yellow pages  
-> Liste curatée de **moteurs d'inférence spécialisés modèle/matériel** — moteurs et plugins dont la valeur est liée à une **famille de modèles** et/ou un **accélérateur**, pas des stacks de serving LLM génériques.
+> **Moteurs d’inférence spécialisés modèle × matériel** · specialized backends · pas un annuaire serving générique  
+> Liste curatée d’**engines et plugins** dont la valeur est liée à une **famille de modèles** et/ou un **accélérateur**.
 
-**Dans le périmètre :** moteurs spécialisés à ordonnancement d’experts stratifié / hybride CPU–GPU（famille de méthodes Strata）；moteurs d'inférence compile-time ou au niveau kernel pour puces / runtimes spécifiques ; runtimes spécialisés par famille de modèles (ex. classe DeepSeek) ; plugins EP / backend vendeur (Ascend, Neuron, TPU, Tenstorrent…) ; stacks LLM NPU edge ; bibliothèques de kernels MoE / attention (citables comme « couche moteur »).  
-**Hors périmètre :** pages jaunes de megapacks serving génériques (vLLM / SGLang / TGI / Ollama) — n'inclure une ligne que si c'est clairement un **backend / plugin spécifique accélérateur ou famille de modèles** ; frameworks d'entraînement ; tableaux de benchmarks purs ; pages marketing sans implémentation OSS/docs.
+**Dans le périmètre :** engines/plugins organisés par **catégorie de modèle**, puis par **matériel** ; ordonnancement d’experts stratifié / hybride CPU–GPU (famille Strata) ; runtimes de famille de modèles ; plugins EP / backends vendeur ; stacks NPU edge ; bibliothèques de kernels MoE / Attention citables.  
+**Hors périmètre :** annuaires serving génériques vLLM / SGLang / TGI / Ollama (n’inclure une ligne que si c’est clairement un **backend / plugin** lié à un accélérateur ou une famille de modèles) ; frameworks d’entraînement ; purs benchmarks ; pages marketing sans OSS/docs.
 
-**Marques :** ⭐ Établi / largement adopté · ☄️ En hausse / à surveiller  
-**Structure :** Method Family × Hardware Domain  
-**Langues :** édition française ; le chinois est la version principale dans [README.md](README.md). Noms de projets et liens restent en anglais.
+**Marqueurs :** ⭐ Établi / largement adopté · ☄️ En hausse / à suivre · **First-party** = maintenu par InferMatrixLab (pas une Spec tierce)  
+**Structure :** **L1 = catégorie de modèle** → **L2 = matériel** (NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / Cross-vendor kernels ; puces non listées sous Other accelerators)  
+**Langues :** édition française ; primaire chinoise [README.md](README.md). Noms de projets et liens restent en anglais.
 
-### Moteur spécialisé ≠ Serving générique (lire d'abord)
+### Engine spécialisé ≠ Serving générique (à lire d’abord)
 
-| Concept | Qu'est-ce que c'est | Ce dépôt ? |
+| Concept | Qu’est-ce ? | Ce dépôt ? |
 |---|---|---|
-| **Moteur spécialisé** | Chemin d'inférence compilé ou profondément custom pour une ISA de puce / runtime vendeur / famille de modèles | ✅ Ici |
-| **Serving générique** | Stack d'ordonnancement multi-modèles multi-GPU (vLLM, SGLang, TGI…) | ❌ Pas de pages jaunes ; seulement leurs **lignes de plugins hard/modèle** |
-| **Bibliothèque de kernels** | Couche d'opérateurs appelable par plusieurs moteurs (FlashAttention / DeepGEMM…) | ✅ OK dans « Kernels / MoE » |
-| **Outils format / conversion** | Export ONNX/GGUF seul, sans runtime d'inférence | ❌ En général non (chaîne Core ML Tools conversion+déploiement possible) |
+| **Engine spécialisé** | Chemin d’inférence compilé ou profondément customisé pour une ISA / runtime vendeur / famille de modèles | ✅ Ici |
+| **Serving générique** | Stack multi-modèles multi-GPU (vLLM, SGLang, TGI…) | ❌ Pas d’annuaire ; seulement les **lignes plugin hard/modèle** |
+| **Bibliothèque de kernels** | Couche d’opérateurs appellable par plusieurs engines | ✅ OK sous la classe de modèles → Cross-vendor kernels |
+| **Outils format / conversion** | Export ONNX/GGUF seul, sans runtime d’inférence | ❌ En général non (Core ML Tools conversion+déploiement peut qualifier) |
 
 ---
 
 ## Règles de contribution
 
-- **⭐ Established :** docs solides ; chemin build/run reproductible ; public ~≥ 6 mois ou standard de fait pour une stack de puce.
-- **☄️ Rising :** actif sur les 12 derniers mois ; peut nommer la famille de modèles ou le matériel lié ; lien repo/docs vérifiable.
-- **Requis :** quel modèle/matériel, définition du problème en une phrase, lien, section, ⭐/☄️.
-- **Rejet :** pubs de dépôt serving générique entier ; pas de spécialisation hard/modèle ; wrappers API seuls.
-- PR bienvenues ; ouvrir une issue d'abord si la section est floue.
+- **⭐ Established :** docs solides ; build/run reproductible ; public ~≥ 6 mois ou standard de fait d’une stack puce.
+- **☄️ Rising :** actif sur 12 mois ; famille de modèles ou matériel nommé ; lien vérifiable.
+- **Requis :** catégorie de modèle, matériel, définition en une ligne, lien, ⭐/☄️ ; marquer les lignes first-party.
+- **Rejet :** pubs de serving générique ; aucune spécialisation ; simples wrappers API.
+- PR bienvenues ; ouvrir une issue si la section est floue.
 
 ---
 
-## Table des matières
+## Table of Contents
 
-- [Hardware · NVIDIA (famille TensorRT)](#hardware--nvidia-famille-tensorrt)
-- [Hardware · Ascend / NPU domestique](#hardware--ascend--npu-domestique)
-- [Hardware · AWS Inferentia / Trainium](#hardware--aws-inferentia--trainium)
-- [Hardware · TPU](#hardware--tpu)
-- [Hardware · Apple / Metal](#hardware--apple--metal)
-- [Hardware · Intel OpenVINO / CPU·iGPU·NPU](#hardware--intel-openvino--cpuiGPUnpu)
-- [Hardware · NPU edge / mobile](#hardware--npu-edge--mobile)
-- [Hardware · Autres plugins accélérateurs](#hardware--autres-plugins-accélérateurs)
-- [Model · Runtime spécialisé famille de modèles](#model--runtime-spécialisé-famille-de-modèles)
-- [Method · Ordonnancement stratifié / spécialisé（classe Strata）](#method--ordonnancement-stratifié--spécialiséclasse-strata)
-- [Propre · InferMatrixLab（pas une Spec tierce）](#propre--infermatrixlabpas-une-spec-tierce)
-- [Kernels · Ops spécialisées MoE / Attention](#kernels--ops-spécialisées-moe--attention)
+- [Dense LLM](#dense-llm)
+- [MoE](#moe)
+- [Multimodal / Omni](#multimodal--omni)
+- [Diffusion · Image](#diffusion--image)
+- [Diffusion · Video](#diffusion--video)
+- [Speech · TTS / ASR](#speech--tts--asr)
+- [Embedding / Rerank](#embedding--rerank)
+- [Other](#other)
+- [Index first-party · InferMatrixLab (pas Spec tierce)](#index-first-party--infermatrixlab-pas-spec-tierce)
 - [Contrast · Frontière vs Serving générique](#contrast--frontière-vs-serving-générique)
 - [Related](#related)
 - [License](#license)
 
 ---
 
-## Hardware · NVIDIA (famille TensorRT)
+## Dense LLM
 
-Moteurs LLM et d'optimisation de graphes **compile-time / grade vendeur** pour GPU NVIDIA (pas « encore un serveur compatible OpenAI »).
+Engines et backends matériels pour LLM Transformer / décodeur dense (hors MoE principal).
 
-| Marque | Projet | En une phrase | Lien |
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **NVIDIA/TensorRT-LLM** | Moteur d'inférence LLM/VLM officiel NVIDIA : kernels CUDA custom, build d'engine, batching in-flight ; lié aux GPU NVIDIA | https://github.com/NVIDIA/TensorRT-LLM |
-| ⭐ | **NVIDIA/TensorRT** | Optimiseur & runtime d'inférence NVIDIA général ; point d'entrée pour de nombreux moteurs CV/diffusion/réseaux custom | https://github.com/NVIDIA/TensorRT |
+| ⭐ | **NVIDIA/TensorRT-LLM** | Engine LLM/VLM officiel NVIDIA : kernels CUDA custom, build d’engine, batching in-flight ; GPU NVIDIA | https://github.com/NVIDIA/TensorRT-LLM |
+| ☄️ | **turboderp-org/exllamav3** | Inférence LLM quantifiée haute vitesse pour GPU NVIDIA grand public (ligne ExLlama) | https://github.com/turboderp-org/exllamav3 |
 
----
+### Ascend
 
-## Hardware · Ascend / NPU domestique
-
-Backends et plugins spécialisés sur Ascend et NPU similaires (le cœur vLLM générique n'est pas listé — seulement les chemins Ascend).
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ☄️ | **vllm-project/vllm-ascend** | Plugin matériel Ascend (昇腾) pour vLLM ; backend NPU dédié, pas une page jaune générique | https://github.com/vllm-project/vllm-ascend |
+| ☄️ | **vllm-project/vllm-ascend** | Plugin matériel Ascend pour vLLM ; backend NPU dédié | https://github.com/vllm-project/vllm-ascend |
 
-> Les stacks officielles MindIE / CANN passent surtout par la doc et le firmware Huawei ; ajouter une ligne ⭐ dès qu'un miroir public stable existe.
+> Stacks MindIE / CANN surtout via docs/firmware Huawei ; ajouter une ligne ⭐ dès qu’un miroir public stable existe.
 
----
+### Neuron-Trainium
 
-## Hardware · AWS Inferentia / Trainium
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
 | ☄️ | **aws-neuron/neuronx-distributed-inference** | NeuronX Distributed Inference (NxDI) : inférence LLM distribuée sur Inferentia/Trainium | https://github.com/aws-neuron/neuronx-distributed-inference |
-| ☄️ | **vllm-project/vllm-neuron** | Chemin plugin vLLM × Neuron ; backend dédié Trainium/Inferentia | https://github.com/vllm-project/vllm-neuron |
+| ☄️ | **vllm-project/vllm-neuron** | Chemin plugin vLLM × Neuron ; backend Trainium/Inferentia | https://github.com/vllm-project/vllm-neuron |
 
----
+### TPU
 
-## Hardware · TPU
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ☄️ | **vllm-project/tpu-inference** | Backend d'inférence TPU de vLLM (tpu-inference) ; lié aux TPU Google | https://github.com/vllm-project/tpu-inference |
+| ☄️ | **vllm-project/tpu-inference** | Backend d’inférence TPU pour vLLM ; lié à Google TPU | https://github.com/vllm-project/tpu-inference |
 | ☄️ | **huggingface/optimum-tpu** | Hugging Face Optimum TPU : chemin dédié pour déployer des Transformers sur TPU | https://github.com/huggingface/optimum-tpu |
 
----
+### Apple-Metal
 
-## Hardware · Apple / Metal
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **ml-explore/mlx** | Framework de tableaux style officiel pour Apple Silicon ; substrat d'exécution modèle sur Metal | https://github.com/ml-explore/mlx |
-| ⭐ | **ml-explore/mlx-lm** | Chaîne d'outils d'inférence & serving LLM sur MLX ; liée à Apple Silicon | https://github.com/ml-explore/mlx-lm |
-| ⭐ | **apple/coremltools** | Chaîne de conversion & déploiement Core ML ; chemin Neural Engine / GPU iOS/macOS | https://github.com/apple/coremltools |
+| ⭐ | **ml-explore/mlx** | Framework de tableaux Apple Silicon ; substrat d’exécution modèle sur Metal | https://github.com/ml-explore/mlx |
+| ⭐ | **ml-explore/mlx-lm** | Chaîne d’inférence & serving LLM sur MLX ; Apple Silicon | https://github.com/ml-explore/mlx-lm |
+| ⭐ | **apple/coremltools** | Conversion & déploiement Core ML ; Neural Engine / GPU iOS/macOS | https://github.com/apple/coremltools |
 
----
+### Intel
 
-## Hardware · Intel OpenVINO / CPU·iGPU·NPU
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **openvinotoolkit/openvino.genai** | OpenVINO GenAI : runtime & pipelines d'IA générative sur CPU/GPU/NPU Intel | https://github.com/openvinotoolkit/openvino.genai |
+| ⭐ | **openvinotoolkit/openvino.genai** | OpenVINO GenAI : runtime & pipelines d’IA générative sur CPU/GPU/NPU Intel | https://github.com/openvinotoolkit/openvino.genai |
 
----
+### Edge-NPU
 
-## Hardware · NPU edge / mobile
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ☄️ | **airockchip/rknn-llm** | Rockchip RKNN-LLM : stack d'inférence LLM sur NPU embarqués (ex. RK3588) | https://github.com/airockchip/rknn-llm |
-| ☄️ | **hailo-ai/hailort** | HailoRT : runtime d'inférence léger haute perf. sur accélérateurs edge Hailo | https://github.com/hailo-ai/hailort |
+| ☄️ | **airockchip/rknn-llm** | Rockchip RKNN-LLM : stack LLM sur NPU embarqués (ex. RK3588) | https://github.com/airockchip/rknn-llm |
+| ☄️ | **hailo-ai/hailort** | HailoRT : runtime d’inférence léger haute perf sur accélérateurs Hailo | https://github.com/hailo-ai/hailort |
 
----
+### Other accelerators
 
-## Hardware · Autres plugins accélérateurs
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ☄️ | **tenstorrent/vllm-tt-plugin** | Plugin backend vLLM Tenstorrent ; s'appuie sur la stack d'opérateurs TT-Metalium | https://github.com/tenstorrent/vllm-tt-plugin |
-| ☄️ | **tenstorrent/tt-metal** | TT-Metalium / TT-NN : modèle de programmation opérateurs & kernels sur puces Tenstorrent | https://github.com/tenstorrent/tt-metal |
+| ☄️ | **tenstorrent/vllm-tt-plugin** | Plugin backend vLLM Tenstorrent ; avec la stack d’opérateurs TT-Metalium | https://github.com/tenstorrent/vllm-tt-plugin |
+| ☄️ | **tenstorrent/tt-metal** | TT-Metalium / TT-NN : modèle de programmation opérateurs/kernels sur puces Tenstorrent | https://github.com/tenstorrent/tt-metal |
 
----
+### Cross-vendor kernels
 
-## Model · Runtime spécialisé famille de modèles
-
-Moteurs profondément custom pour des structures de modèles spécifiques (DeepSeek MoE, layouts quantifiés haute compression, offload d'experts hybride, etc.).
-
-> Voir aussi [Method · Ordonnancement stratifié / spécialisé（classe Strata）](#method--ordonnancement-stratifié--spécialiséclasse-strata) plus bas.
-
-| Marque | Projet | En une phrase | Lien |
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **deepseek-ai/DeepInfer** | Framework d'inférence production DeepSeek (OSS) ; lié à DeepSeek-V4.1-Flash sur NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
-| ☄️ | **turboderp-org/exllamav3** | Inférence LLM quantifiée haute vitesse pour GPU NVIDIA grand public modernes (ligne ExLlama) | https://github.com/turboderp-org/exllamav3 |
-| ⭐ | **kvcache-ai/ktransformers** | Framework d'inférence MoE / grands modèles hybride CPU/GPU ; offload d'experts & chemins kernels | https://github.com/kvcache-ai/ktransformers |
+| ⭐ | **flashinfer-ai/flashinfer** | Bibliothèque de kernels Attention / sampling pour LLM serving ; embarquable | https://github.com/flashinfer-ai/flashinfer |
 
 ---
 
-## Method · Ordonnancement stratifié / spécialisé（classe Strata）
+## MoE
 
-> **Note de nommage :** Ici, « Strata » désigne surtout [Niko1221/Strata](https://github.com/Niko1221/Strata) — un moteur **spécialisé modèle** pour grands MoE（ex. Qwen3.8-Flash-Next）sur PC grand public, avec **tiers VRAM / RAM système / SSD** et **CPU calculant en parallèle les experts non mis en cache**. La même famille de méthodes couvre les généralisations à d’autres MoE, l’offload hôte/SSD et l’orchestration CPU–GPU. En cas d’homonymes, **les liens et une-lignes ci-dessous font foi**.
+Engines spécialisés Mixture-of-Experts : parallélisme d’experts, offload, ordonnancement stratifié, kernels MoE.
 
-| Marque | Projet | Une ligne | Lien |
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **Niko1221/Strata** | Moteur grand public pour MoE type Qwen3.8-Flash-Next : experts denses/chauds sur GPU, tous les experts épinglés en RAM avec calcul CPU parallèle des ratés, n-gram sur SSD ; CUDA/HIP | https://github.com/Niko1221/Strata |
-| ☄️ | **voidstackloop/extended-strata-moe** | Généralise le tiering async GPU/CPU style Strata à de nombreuses architectures MoE llama.cpp (aligné méthode ; dépôt encore jeune) | https://github.com/voidstackloop/extended-strata-moe |
-| ☄️ | **EfficientMoE/MoE-Infinity** | Offload d’experts MoE vers mémoire hôte/SSD + cache et prefetch sensibles à l’activation ; bibliothèque + chemin de service | https://github.com/EfficientMoE/MoE-Infinity |
-| ☄️ | **efeslab/fiddler** | ICLR'25 : orchestration CPU–GPU pour MoE local (experts manquants calculés sur CPU plutôt que transfert de poids) | https://github.com/efeslab/fiddler |
+| ⭐ | **deepseek-ai/DeepInfer** | Framework d’inférence production DeepSeek (OSS) ; DeepSeek-V4.1-Flash sur NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
+
+### Ascend
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ⭐ | **deepseek-ai/DeepInfer** | Idem ; chemin Ascend 950 (double matériel avec NVIDIA SM100) | https://github.com/deepseek-ai/DeepInfer |
+
+### CPU-RAM-SSD tier
+
+> **Classe Strata :** ici, « Strata » désigne surtout [Niko1221/Strata](https://github.com/Niko1221/Strata) — engine grand public pour gros MoE (ex. Qwen3.8-Flash-Next) avec **tiers VRAM / RAM système / SSD** et **CPU calculant en parallèle les experts non cachés**. Même famille : généralisations MoE, offload hôte/SSD, orchestration CPU–GPU. En cas d’homonymie, **faire confiance aux liens et one-liners ci-dessous**.
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ⭐ | **Niko1221/Strata** | Engine MoE type Qwen3.8-Flash-Next : experts dense/chauds sur GPU, tous les experts épinglés en RAM + CPU parallèle, SSD n-gram ; CUDA/HIP | https://github.com/Niko1221/Strata |
+| ☄️ | **voidstackloop/extended-strata-moe** | Généralise le tiering async GPU/CPU Strata à de nombreux MoE llama.cpp (aligné méthode ; repo tôt) | https://github.com/voidstackloop/extended-strata-moe |
+| ☄️ | **EfficientMoE/MoE-Infinity** | Offload d’experts MoE vers mémoire hôte/SSD + cache/prefetch aware activation | https://github.com/EfficientMoE/MoE-Infinity |
+| ☄️ | **efeslab/fiddler** | ICLR'25 : orchestration CPU–GPU MoE local (calculer les experts manquants sur CPU) | https://github.com/efeslab/fiddler |
+| ⭐ | **kvcache-ai/ktransformers** | Inférence MoE / grands modèles hybride CPU/GPU ; offload d’experts & chemins kernels | https://github.com/kvcache-ai/ktransformers |
+
+### Cross-vendor kernels
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ⭐ | **deepseek-ai/DeepGEMM** | Bibliothèque kernels GPU BLAS/GEMM haute efficacité DeepSeek OSS | https://github.com/deepseek-ai/DeepGEMM |
+| ⭐ | **deepseek-ai/DeepEP** | Bibliothèque de communication Expert Parallel DeepSeek OSS ; spécifique MoE | https://github.com/deepseek-ai/DeepEP |
 
 ---
 
-## Propre · InferMatrixLab（pas une Spec tierce）
+## Multimodal / Omni
 
-> **Frontière（obligatoire）:** Lignes ci-dessous = moteurs et recettes **spécialisés** modèle/matériel maintenus par **InferMatrixLab**, pour liens internes et transparence. **Ce n’est pas** une Spec industrielle tierce et **ne doit pas** être cité comme « norme officielle » ni comme ligne d’autorité Hardware/Model. **Séparé** des lignes tierces ci-dessus.
+Engines pour familles multimodal / Omni (parole · vision · texte).
 
-| Marque | Projet | Une ligne | Lien |
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ☄️ | **InferMatrixLab/system1-omni** | Moteur d’inférence haute perf. maintenu par la communauté pour la famille System1 (Rust ; style vLLM / vLLM-Omni) | https://github.com/InferMatrixLab/system1-omni |
-| ☄️ | **InferMatrixLab/vllm-rlt** | Moteur pour transformers bouclés : ordonnancement au niveau loop et étapes composables | https://github.com/InferMatrixLab/vllm-rlt |
-| ☄️ | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | Moteur vocal streaming mono-GPU spécialisé MiniCPM-o 4.5 (comparable à vLLM-Omni / SGLang-Omni) | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
-| ☄️ | **InferMatrixLab/vllm-omni-mlx** | Serveur d’inférence omni-modalité sur Apple Silicon (API compatible OpenAI / Anthropic) | https://github.com/InferMatrixLab/vllm-omni-mlx |
-| ☄️ | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Inférence Qwen3-TTS autonome rapide sur NPU Ascend (ex. 910B) via chemin RSI | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
-| ☄️ | **InferMatrixLab/drama-3-single-b300-engine** | Moteur TTS streaming spécialisé Fish Audio Drama 3 sur un seul NVIDIA B300 | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
-| ☄️ | **InferMatrixLab/recipe** | Catalogue communautaire de recettes « modèle × moteur × matériel » (pas un annuaire serving générique) | https://github.com/InferMatrixLab/recipe |
+| ☄️ · First-party | **InferMatrixLab/system1-omni** | Engine haute perf maintenu par la communauté pour System1 (Rust ; style vLLM / vLLM-Omni) | https://github.com/InferMatrixLab/system1-omni |
+| ☄️ · First-party | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | Engine parole streaming mono-GPU spécialisé MiniCPM-o 4.5 | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+
+### Apple-Metal
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ☄️ · First-party | **InferMatrixLab/vllm-omni-mlx** | Serveur d’inférence omni-modalité sur Apple Silicon (API OpenAI / Anthropic) | https://github.com/InferMatrixLab/vllm-omni-mlx |
 
 ---
 
-## Kernels · Ops spécialisées MoE / Attention
+## Diffusion · Image
 
-**Bibliothèques de kernels spécialisées** composables par les moteurs amont (pas des produits serving complets, mais la couche de perf « modèle×matériel »).
+Chemins d’engine spécialisés ou compile-heavy pour diffusion image / génération d’images.
 
-| Marque | Projet | En une phrase | Lien |
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
 |---|---|---|---|
-| ⭐ | **flashinfer-ai/flashinfer** | Bibliothèque de kernels Attention / sampling pour LLM serving ; intégrable par plusieurs moteurs | https://github.com/flashinfer-ai/flashinfer |
-| ⭐ | **deepseek-ai/DeepGEMM** | Bibliothèque de kernels GPU BLAS/GEMM haute efficacité (OSS DeepSeek) | https://github.com/deepseek-ai/DeepGEMM |
-| ⭐ | **deepseek-ai/DeepEP** | Bibliothèque de communication Expert Parallel (OSS DeepSeek) ; spécifique MoE | https://github.com/deepseek-ai/DeepEP |
+| ⭐ | **NVIDIA/TensorRT** | Optimiseur & runtime d’inférence NVIDIA général ; entrée pour de nombreux engines CV/diffusion/custom | https://github.com/NVIDIA/TensorRT |
+
+---
+
+## Diffusion · Video
+
+Engines spécialisés diffusion / génération vidéo.
+
+> Aucune ligne vérifiée pour l’instant ; PR bienvenues sous catégorie de modèle → matériel.
+
+---
+
+## Speech · TTS / ASR
+
+Engines spécialisés synthèse / reconnaissance vocale.
+
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ☄️ · First-party | **InferMatrixLab/drama-3-single-b300-engine** | Engine TTS streaming pour Fish Audio Drama 3 sur un seul NVIDIA B300 | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+
+### Ascend
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ☄️ · First-party | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Inférence Qwen3-TTS rapide autonome sur Ascend NPU (ex. 910B) via chemin RSI | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+
+---
+
+## Embedding / Rerank
+
+Chemins d’inférence spécialisés embedding / rerank.
+
+> Aucune ligne vérifiée pour l’instant ; PR bienvenues sous catégorie de modèle → matériel.
+
+---
+
+## Other
+
+Engines et catalogues de recettes encore modèle×matériel mais hors classes ci-dessus.
+
+### NVIDIA
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ☄️ · First-party | **InferMatrixLab/vllm-rlt** | Engine pour transformers loopés : ordonnancement au niveau loop et stages composables | https://github.com/InferMatrixLab/vllm-rlt |
+
+### Catalogs
+
+| Marque | Projet | En une ligne | Lien |
+|---|---|---|---|
+| ☄️ · First-party | **InferMatrixLab/recipe** | Catalogue communautaire de recettes « modèle × engine × matériel » | https://github.com/InferMatrixLab/recipe |
+
+---
+
+## Index first-party · InferMatrixLab (pas Spec tierce)
+
+> **Frontière (obligatoire) :** lignes **InferMatrixLab** déjà placées dans les tableaux (marquées First-party). **Ce ne sont pas** des Spec industrielles tierces. Index de transparence uniquement.
+
+| Projet | Emplacement | Lien |
+|---|---|---|
+| system1-omni | Multimodal / Omni → NVIDIA | https://github.com/InferMatrixLab/system1-omni |
+| minicpm-o-4.5-single-gpu-engine | Multimodal / Omni → NVIDIA | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+| vllm-omni-mlx | Multimodal / Omni → Apple-Metal | https://github.com/InferMatrixLab/vllm-omni-mlx |
+| drama-3-single-b300-engine | Speech · TTS / ASR → NVIDIA | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+| qwen3-tts-rsi-npu-engine | Speech · TTS / ASR → Ascend | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+| vllm-rlt | Other → NVIDIA | https://github.com/InferMatrixLab/vllm-rlt |
+| recipe | Other → Catalogs | https://github.com/InferMatrixLab/recipe |
 
 ---
 
 ## Contrast · Frontière vs Serving générique
 
-| Projet courant | Position ici | Note |
+| Projet courant | Position | Note |
 |---|---|---|
-| vLLM / SGLang / TGI | Pas de pages jaunes | Seulement leurs lignes de plugins **Ascend / Neuron / TPU / TT** |
-| Ollama / llama.cpp | Rejet par défaut | Runtime portable cross-hardware ; discuter une ligne séparée si un backend devient « chemin officiel de puce » |
-| Triton Inference Server | Pas de pages jaunes produit | Coque d'orchestration/serving ; moteurs backend (TRT-LLM etc.) déjà listés ci-dessus |
+| vLLM / SGLang / TGI | Pas d’annuaire | Seulement les plugins **Ascend / Neuron / TPU / TT** (sous classe × matériel) |
+| Ollama / llama.cpp | Rejet par défaut | Runtime portable cross-matériel ; discuter une ligne si un backend devient « chemin officiel puce » |
+| Triton Inference Server | Pas d’annuaire produit | Coque d’orchestration ; backends (TRT-LLM etc.) déjà listés par modèle × matériel |
 
 ---
 
 ## Related
 
-- **Moteurs propres :** voir [Propre · InferMatrixLab](#propre--infermatrixlabpas-une-spec-tierce)（projets org, pas Spec）
-- Autres docs et comparaisons d'ingénierie d'inférence InferMatrixLab (liens croisés dans l'org plus tard)
-- Pour le choix de serving générique, utiliser un awesome / manuel séparé — ne pas mélanger les tableaux avec ce dépôt
+- **Index first-party :** [Index first-party · InferMatrixLab](#index-first-party--infermatrixlab-pas-spec-tierce)
+- Autres docs d’inférence InferMatrixLab (liens croisés org plus tard)
+- Pour le serving générique, utiliser un autre awesome / manuel — ne pas mélanger les tableaux
 
 ---
 
 ## License
 
-Le contenu de la liste est contribué dans l'esprit **CC0 1.0** (réutilisation libre des tableaux d'entrées). Les projets liés gardent leurs propres licences.
+Contenu de la liste contribué dans l’esprit **CC0 1.0** (réutilisation libre des tableaux). Les projets liés gardent leurs licences.
