@@ -12,7 +12,7 @@
 **Out of scope（不收）：** vLLM / SGLang / TGI / Ollama 等**通用 serving 全家桶黄页**（仅当条目明确是某加速器或模型族的专用后端 / 插件时收录该行）；训练框架；纯基准榜；营销页无开源/无文档实现。
 
 **标记：** ⭐ 成熟 / 广泛采用 · ☄️ 上升中 / 值得盯 · **自有** = InferMatrixLab 维护（非第三方 Spec）  
-**结构：** **一级 = 模型类别** → **二级 = 硬件**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / Cross-vendor kernels；未列入芯片进 Other accelerators）  
+**结构：** **一级 = 模型类别** → **二级 = 硬件**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / CPU-NVMe / Cross-vendor kernels；未列入芯片进 Other accelerators）  
 **语言：** 中文说明为主；另有 [English](README.en.md) / [日本語](README.ja.md) / [한국어](README.ko.md) / [Français](README.fr.md) / [Español](README.es.md)；项目名与链接保留英文。
 
 ### 专用引擎 ≠ 通用 Serving（先读）
@@ -63,6 +63,7 @@
 |---|---|---|---|
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 官方 LLM/VLM 推理引擎：自定义 CUDA 内核、引擎构建、IB 批处理；绑 NVIDIA GPU | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 面向现代消费级 NVIDIA GPU 的高速量化 LLM 推理库（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
+| ⭐ | **antirez/ds4** | DeepSeek-4 Flash/PRO 模型族本地推理引擎；CUDA 路径；另支持 Metal / ROCm | https://github.com/antirez/ds4 |
 
 ### NVIDIA · RTX / Blackwell (SM120)
 
@@ -99,6 +100,7 @@
 | ⭐ | **ml-explore/mlx** | Apple 官方风格的 Apple Silicon 数组框架；Metal 上的模型运行底座 | https://github.com/ml-explore/mlx |
 | ⭐ | **ml-explore/mlx-lm** | 基于 MLX 的 LLM 推理与服务工具链；绑 Apple Silicon | https://github.com/ml-explore/mlx-lm |
 | ⭐ | **apple/coremltools** | Core ML 转换与部署工具链；iOS/macOS Neural Engine / GPU 路径 | https://github.com/apple/coremltools |
+| ⭐ | **antirez/ds4** | 同上；Apple Silicon Metal 路径（DeepSeek-4 Flash/PRO） | https://github.com/antirez/ds4 |
 
 ### Intel
 
@@ -138,6 +140,13 @@
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek 生产级推理框架开源版；绑 DeepSeek-V4.1-Flash，硬件为 NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 
+
+### NVIDIA · RTX
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ⭐ | **FlashML-org/FreeToken** | 桌面级超大规模 MoE 本地服务：专家卸载与快速路径；面向消费级 NVIDIA（RTX 类） | https://github.com/FlashML-org/FreeToken |
+
 ### Ascend
 
 | 标记 | 项目 | 一句话 | 链接 |
@@ -162,6 +171,14 @@
 | ☄️ | **efeslab/fiddler** | ICLR'25：本地设备上 MoE 的 CPU–GPU 协同编排（缺专家时在 CPU 算激活，而非搬权重） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | 混合 CPU/GPU 的 MoE / 大模型推理优化框架；强调专家卸载与内核路径 | https://github.com/kvcache-ai/ktransformers |
 | ⭐ | **Tiiny-AI/PowerInfer** | 消费级 GPU+CPU 混合推理：激活 locality（热/冷神经元）拆分；含 PowerInfer-2 端侧 Mixtral；原 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
+| ⭐ | **JustVugg/colibri** | 纯 C、零依赖 MoE 引擎：专家从磁盘流式加载；在现有消费级硬件上跑前沿 MoE | https://github.com/JustVugg/colibri |
+
+
+### CPU-NVMe
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ⭐ | **sqliteai/warp** | 可嵌入、零依赖纯 C 引擎：从 NVMe 流式加载激活权重，超内存跑 Kimi K3 / DeepSeek-V4.1-Flash / GLM-5.3-Flash 等大 MoE | https://github.com/sqliteai/warp |
 
 ### Cross-vendor kernels
 
