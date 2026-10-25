@@ -64,6 +64,12 @@ Specialized engines and hardware backends for dense Transformer / decoder LLMs (
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA's official LLM/VLM inference engine: custom CUDA kernels, engine build, in-flight batching; tied to NVIDIA GPUs | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | High-speed quantized LLM inference for modern consumer NVIDIA GPUs (ExLlama line) | https://github.com/turboderp-org/exllamav3 |
 
+### NVIDIA · RTX / Blackwell (SM120)
+
+| Mark | Project | One-liner | Link |
+|---|---|---|---|
+| ☄️ | **NVIDIA/flare-local-inference** | Local Agent inference: PyTorch build + Rust serve; full dialogue state (KV + recurrent); NVIDIA SM120/SM121; research prototype, not a vLLM replacement | https://github.com/NVIDIA/flare-local-inference |
+
 ### Ascend
 
 | Mark | Project | One-liner | Link |
