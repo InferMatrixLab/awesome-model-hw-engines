@@ -64,6 +64,12 @@ Engines y backends de hardware para LLM Transformer / decodificador densos (no M
 | ⭐ | **NVIDIA/TensorRT-LLM** | Engine LLM/VLM oficial de NVIDIA: kernels CUDA custom, build de engine, batching in-flight; GPU NVIDIA | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | Inferencia LLM cuantizada de alta velocidad para GPU NVIDIA de consumo (línea ExLlama) | https://github.com/turboderp-org/exllamav3 |
 
+### NVIDIA · RTX / Blackwell (SM120)
+
+| Marca | Proyecto | En una línea | Enlace |
+|---|---|---|---|
+| ☄️ | **NVIDIA/flare-local-inference** | Inferencia Agent local: build PyTorch + serve Rust; estado de diálogo completo (KV + recurrente); NVIDIA SM120/SM121; prototipo de investigación, no reemplaza vLLM | https://github.com/NVIDIA/flare-local-inference |
+
 ### Ascend
 
 | Marca | Proyecto | En una línea | Enlace |
