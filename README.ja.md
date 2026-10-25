@@ -144,6 +144,12 @@ Mixture-of-Experts 専用：エキスパート並列、オフロード、階層�
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | 同上；Ascend 950 経路（NVIDIA SM100 と二重ハードウェア） | https://github.com/deepseek-ai/DeepInfer |
 
+### Apple-Metal
+
+| 標記 | プロジェクト | 一言 | リンク |
+|---|---|---|---|
+| ☄️ | **incoai/splash** | Mac Apple Silicon 向けローカル専用エンジン（mlx-serve 比で極致最適化）：DFlash 投機デコード + SSD Expert Offload + Prefix Cache；Qwen Flash-Next 級 | https://github.com/incoai/splash |
+
 ### CPU-RAM-SSD tier
 
 > **Strata 系：** 本リストで「Strata」は主に [Niko1221/Strata](https://github.com/Niko1221/Strata) を指す — 大規模 MoE（例：Qwen3.8-Flash-Next）向けコンシューマ PC 専用エンジンで **VRAM / システム RAM / SSD 階層** と **未キャッシュエキスパートの CPU 並列計算**。同手法族には他 MoE への一般化やホスト/SSD オフロード、CPU–GPU 協調も含む。同名の別リポジトリがある場合は **下表のリンクと一言を正とする**。
