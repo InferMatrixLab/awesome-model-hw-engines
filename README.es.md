@@ -12,7 +12,7 @@
 **Fuera de alcance:** directorios serving genéricos vLLM / SGLang / TGI / Ollama (incluir una fila solo si es claramente un **backend / plugin** de acelerador o familia de modelos); frameworks de entrenamiento; puros benchmarks; páginas de marketing sin OSS/docs.
 
 **Marcadores:** ⭐ Establecido / ampliamente adoptado · ☄️ En auge / a vigilar · **First-party** = mantenido por InferMatrixLab (no Spec de terceros)  
-**Estructura:** **L1 = categoría de modelo** → **L2 = hardware** (NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / Cross-vendor kernels; chips no listados bajo Other accelerators)  
+**Estructura:** **L1 = categoría de modelo** → **L2 = hardware** (NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / CPU-NVMe / Cross-vendor kernels; chips no listados bajo Other accelerators)  
 **Idiomas:** edición en español; primaria en chino [README.md](README.md). Nombres de proyectos y enlaces en inglés.
 
 ### Engine especializado ≠ Serving genérico (leer primero)
@@ -63,6 +63,7 @@ Engines y backends de hardware para LLM Transformer / decodificador densos (no M
 |---|---|---|---|
 | ⭐ | **NVIDIA/TensorRT-LLM** | Engine LLM/VLM oficial de NVIDIA: kernels CUDA custom, build de engine, batching in-flight; GPU NVIDIA | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | Inferencia LLM cuantizada de alta velocidad para GPU NVIDIA de consumo (línea ExLlama) | https://github.com/turboderp-org/exllamav3 |
+| ⭐ | **antirez/ds4** | Engine de inferencia local de la familia DeepSeek-4 Flash/PRO; ruta CUDA; también Metal / ROCm | https://github.com/antirez/ds4 |
 
 ### NVIDIA · RTX / Blackwell (SM120)
 
@@ -99,6 +100,7 @@ Engines y backends de hardware para LLM Transformer / decodificador densos (no M
 | ⭐ | **ml-explore/mlx** | Framework de arrays Apple Silicon; sustrato de ejecución de modelos en Metal | https://github.com/ml-explore/mlx |
 | ⭐ | **ml-explore/mlx-lm** | Cadena de inferencia y serving LLM sobre MLX; Apple Silicon | https://github.com/ml-explore/mlx-lm |
 | ⭐ | **apple/coremltools** | Conversión y despliegue Core ML; Neural Engine / GPU iOS/macOS | https://github.com/apple/coremltools |
+| ⭐ | **antirez/ds4** | Igual; ruta Apple Silicon Metal (DeepSeek-4 Flash/PRO) | https://github.com/antirez/ds4 |
 
 ### Intel
 
@@ -138,6 +140,13 @@ Engines especializados Mixture-of-Experts: paralelismo de expertos, offload, pla
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | Framework de inferencia de producción DeepSeek (OSS); DeepSeek-V4.1-Flash en NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 
+
+### NVIDIA · RTX
+
+| Marca | Proyecto | En una línea | Enlace |
+|---|---|---|---|
+| ⭐ | **FlashML-org/FreeToken** | Serving MoE a escala datacenter en desktop: offload de expertos + ruta local rápida; NVIDIA de consumo (clase RTX) | https://github.com/FlashML-org/FreeToken |
+
 ### Ascend
 
 | Marca | Proyecto | En una línea | Enlace |
@@ -162,6 +171,14 @@ Engines especializados Mixture-of-Experts: paralelismo de expertos, offload, pla
 | ☄️ | **efeslab/fiddler** | ICLR'25: orquestación CPU–GPU MoE local (calcular expertos faltantes en CPU) | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | Inferencia MoE / modelos grandes híbrida CPU/GPU; offload de expertos y rutas de kernels | https://github.com/kvcache-ai/ktransformers |
 | ⭐ | **Tiiny-AI/PowerInfer** | Engine híbrido GPU+CPU de consumo vía localidad de activación (neuronas calientes/frías); PowerInfer-2 Mixtral en dispositivo; ex-SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
+| ⭐ | **JustVugg/colibri** | Engine MoE en C puro, sin dependencias: expertos en streaming desde disco; MoE de frontera en el hardware que ya tienes | https://github.com/JustVugg/colibri |
+
+
+### CPU-NVMe
+
+| Marca | Proyecto | En una línea | Enlace |
+|---|---|---|---|
+| ⭐ | **sqliteai/warp** | Engine C embebible sin dependencias: transmite pesos activados desde NVMe (Kimi K3 / DeepSeek-V4.1-Flash / GLM-5.3-Flash) más allá de la RAM | https://github.com/sqliteai/warp |
 
 ### Cross-vendor kernels
 
