@@ -64,6 +64,12 @@
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 公式 LLM/VLM 推論エンジン：独自 CUDA カーネル、エンジン構築、IB バッチ；NVIDIA GPU 向け | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 現代のコンシューマ向け NVIDIA GPU 向け高速量子化 LLM 推論ライブラリ（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
 
+### NVIDIA · RTX / Blackwell (SM120)
+
+| 標記 | プロジェクト | 一言 | リンク |
+|---|---|---|---|
+| ☄️ | **NVIDIA/flare-local-inference** | ローカル Agent 推論：PyTorch 構築 + Rust サーブ；完全な対話状態（KV + 再帰）；NVIDIA SM120/SM121；研究プロトタイプ（vLLM の代替ではない） | https://github.com/NVIDIA/flare-local-inference |
+
 ### Ascend
 
 | 標記 | プロジェクト | 一言 | リンク |
