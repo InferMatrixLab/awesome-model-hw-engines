@@ -12,7 +12,7 @@
 **Out of scope:** vLLM / SGLang / TGI / Ollama 등 **일반 서빙 황색 페이지**（하드웨어·모델족 전용 백엔드/플러그인 행만 수록）; 학습 프레임워크; 순수 벤치; 구현 없는 마케팅 페이지.
 
 **표기:** ⭐ 확립/널리 채택 · ☄️ 상승/주시 · **자사** = InferMatrixLab 유지（제3자 Spec 아님）  
-**구조:** **L1 = 모델 카테고리** → **L2 = 하드웨어**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / Cross-vendor kernels; 미등재 칩은 Other accelerators）  
+**구조:** **L1 = 모델 카테고리** → **L2 = 하드웨어**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / CPU-NVMe / Cross-vendor kernels; 미등재 칩은 Other accelerators）  
 **언어:** 한국어 판; 주 판은 [中文 README.md](README.md). 프로젝트명·링크는 영어 유지.
 
 ### 전용 엔진 ≠ 일반 Serving（먼저 읽기）
@@ -63,6 +63,7 @@
 |---|---|---|---|
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 공식 LLM/VLM 추론 엔진: 커스텀 CUDA 커널, 엔진 빌드, IB 배칭; NVIDIA GPU | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 현대 소비자 NVIDIA GPU용 고속 양자화 LLM 추론（ExLlama 계열） | https://github.com/turboderp-org/exllamav3 |
+| ⭐ | **antirez/ds4** | DeepSeek-4 Flash/PRO 모델족 로컬 추론 엔진; CUDA 경로; Metal / ROCm도 지원 | https://github.com/antirez/ds4 |
 
 ### NVIDIA · RTX / Blackwell (SM120)
 
@@ -99,6 +100,7 @@
 | ⭐ | **ml-explore/mlx** | Apple Silicon 배열 프레임워크; Metal 모델 실행 기반 | https://github.com/ml-explore/mlx |
 | ⭐ | **ml-explore/mlx-lm** | MLX LLM 추론·서빙 툴체인; Apple Silicon | https://github.com/ml-explore/mlx-lm |
 | ⭐ | **apple/coremltools** | Core ML 변환·배포 툴체인; iOS/macOS Neural Engine / GPU | https://github.com/apple/coremltools |
+| ⭐ | **antirez/ds4** | 동일; Apple Silicon Metal 경로（DeepSeek-4 Flash/PRO） | https://github.com/antirez/ds4 |
 
 ### Intel
 
@@ -138,6 +140,13 @@ Mixture-of-Experts 전용: 전문가 병렬, 오프로드, 계층 스케줄링, 
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek 프로덕션 추론 프레임워크 OSS; DeepSeek-V4.1-Flash, NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 
+
+### NVIDIA · RTX
+
+| 표기 | 프로젝트 | 한 줄 | 링크 |
+|---|---|---|---|
+| ⭐ | **FlashML-org/FreeToken** | 데스크톱급 초대형 MoE 로컬 서빙: 전문가 오프로드+고속 경로; 소비자 NVIDIA（RTX급） | https://github.com/FlashML-org/FreeToken |
+
 ### Ascend
 
 | 표기 | 프로젝트 | 한 줄 | 링크 |
@@ -162,6 +171,14 @@ Mixture-of-Experts 전용: 전문가 병렬, 오프로드, 계층 스케줄링, 
 | ☄️ | **efeslab/fiddler** | ICLR'25: 로컬 MoE CPU–GPU 조율（누락 전문가를 CPU에서 계산） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | 하이브리드 CPU/GPU MoE/대형 모델 추론 최적화; 전문가 오프로드·커널 경로 | https://github.com/kvcache-ai/ktransformers |
 | ⭐ | **Tiiny-AI/PowerInfer** | 소비자 GPU+CPU 하이브리드: activation locality(핫/콜드 뉴런); PowerInfer-2 온디바이스 Mixtral; 구 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
+| ⭐ | **JustVugg/colibri** | 순수 C·무의존 MoE 엔진: 디스크에서 전문가 스트리밍; 보유 하드웨어로 최전선 MoE | https://github.com/JustVugg/colibri |
+
+
+### CPU-NVMe
+
+| 표기 | 프로젝트 | 한 줄 | 링크 |
+|---|---|---|---|
+| ⭐ | **sqliteai/warp** | 임베드 가능·무의존 C 엔진: NVMe에서 활성화 가중치 스트리밍으로 RAM 초과 Kimi K3 / DeepSeek-V4.1-Flash / GLM-5.3-Flash급 MoE | https://github.com/sqliteai/warp |
 
 ### Cross-vendor kernels
 
