@@ -12,7 +12,7 @@
 **対象外（Out）：** vLLM / SGLang / TGI / Ollama 等の**汎用サービング黄頁**（明確にハードウェア / モデル族専用バックエンド / プラグインの行のみ収録）；学習フレームワーク；純ベンチ；実装なきマーケ頁。
 
 **標記：** ⭐ 確立 / 広く採用 · ☄️ 上昇中 / 注目 · **自社** = InferMatrixLab 保守（第三者 Spec ではない）  
-**構造：** **L1 = モデルカテゴリ** → **L2 = ハードウェア**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / Cross-vendor kernels；未掲載チップは Other accelerators）  
+**構造：** **L1 = モデルカテゴリ** → **L2 = ハードウェア**（NVIDIA / Ascend / Neuron-Trainium / TPU / Apple-Metal / Intel / Edge-NPU / CPU-RAM-SSD tier / CPU-NVMe / Cross-vendor kernels；未掲載チップは Other accelerators）  
 **言語：** 日本語版；主版は [中文 README.md](README.md)。プロジェクト名とリンクは英語のまま。
 
 ### 専用エンジン ≠ 汎用 Serving（先に読む）
@@ -63,6 +63,7 @@
 |---|---|---|---|
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 公式 LLM/VLM 推論エンジン：独自 CUDA カーネル、エンジン構築、IB バッチ；NVIDIA GPU 向け | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 現代のコンシューマ向け NVIDIA GPU 向け高速量子化 LLM 推論ライブラリ（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
+| ⭐ | **antirez/ds4** | DeepSeek-4 Flash/PRO モデル族ローカル推論エンジン；CUDA 経路；Metal / ROCm も対応 | https://github.com/antirez/ds4 |
 
 ### NVIDIA · RTX / Blackwell (SM120)
 
@@ -99,6 +100,7 @@
 | ⭐ | **ml-explore/mlx** | Apple Silicon 配列フレームワーク；Metal 上のモデル実行基盤 | https://github.com/ml-explore/mlx |
 | ⭐ | **ml-explore/mlx-lm** | MLX 上の LLM 推論・サービングツールチェーン；Apple Silicon 向け | https://github.com/ml-explore/mlx-lm |
 | ⭐ | **apple/coremltools** | Core ML 変換・デプロイツールチェーン；iOS/macOS Neural Engine / GPU 経路 | https://github.com/apple/coremltools |
+| ⭐ | **antirez/ds4** | 同上；Apple Silicon Metal 経路（DeepSeek-4 Flash/PRO） | https://github.com/antirez/ds4 |
 
 ### Intel
 
@@ -138,6 +140,13 @@ Mixture-of-Experts 専用：エキスパート並列、オフロード、階層�
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek 本番推論フレームワーク OSS；DeepSeek-V4.1-Flash、NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 
+
+### NVIDIA · RTX
+
+| 標記 | プロジェクト | 一言 | リンク |
+|---|---|---|---|
+| ⭐ | **FlashML-org/FreeToken** | デスクトップ向け大規模 MoE ローカルサービング：エキスパートオフロード＋高速経路；コンシューマ NVIDIA（RTX 級） | https://github.com/FlashML-org/FreeToken |
+
 ### Ascend
 
 | 標記 | プロジェクト | 一言 | リンク |
@@ -162,6 +171,14 @@ Mixture-of-Experts 専用：エキスパート並列、オフロード、階層�
 | ☄️ | **efeslab/fiddler** | ICLR'25：ローカル MoE の CPU–GPU 協調（欠落エキスパートを CPU で計算し重み移送を避ける） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | ハイブリッド CPU/GPU の MoE / 大規模モデル推論最適化；エキスパートオフロードとカーネル経路 | https://github.com/kvcache-ai/ktransformers |
 | ⭐ | **Tiiny-AI/PowerInfer** | コンシューマ GPU+CPU ハイブリッド：活性化 locality（ホット/コールドニューロン）；PowerInfer-2 で端末 Mixtral；旧 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
+| ⭐ | **JustVugg/colibri** | 純 C・依存ゼロの MoE エンジン：ディスクからエキスパートをストリーム；手元ハードで最先端 MoE | https://github.com/JustVugg/colibri |
+
+
+### CPU-NVMe
+
+| 標記 | プロジェクト | 一言 | リンク |
+|---|---|---|---|
+| ⭐ | **sqliteai/warp** | 埋め込み可能な依存ゼロ C エンジン：NVMe から活性化重みをストリームし、RAM 超えで Kimi K3 / DeepSeek-V4.1-Flash / GLM-5.3-Flash 級 MoE | https://github.com/sqliteai/warp |
 
 ### Cross-vendor kernels
 
