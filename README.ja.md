@@ -8,7 +8,7 @@
 > **モデル × ハードウェア専用推論エンジン精選** · specialized backends · not a general serving yellow pages  
 > **モデル族 / アクセラレータに価値が紐づく**推論エンジンとプラグインのキュレーション一覧。汎用 LLM serving スタックの黄ページではありません。
 
-**収録範囲：** 特定チップ / ランタイム向けのコンパイル型またはカーネル級推論エンジン；モデル族専用 runtime（例：DeepSeek 系）；ベンダー EP / バックエンドプラグイン（Ascend、Neuron、TPU、Tenstorrent…）；エッジ NPU LLM スタック；MoE / attention 専用カーネルライブラリ（「エンジン層」として独立引用できる場合）。  
+**収録範囲：** 階層 / ハイブリッド CPU–GPU エキスパート・スケジューリング専用エンジン（Strata 方法族）；特定チップ / ランタイム向けのコンパイル型またはカーネル級推論エンジン；モデル族専用 runtime（例：DeepSeek 系）；ベンダー EP / バックエンドプラグイン（Ascend、Neuron、TPU、Tenstorrent…）；エッジ NPU LLM スタック；MoE / attention 専用カーネルライブラリ（「エンジン層」として独立引用できる場合）。  
 **対象外：** vLLM / SGLang / TGI / Ollama などの**汎用 serving 全家桶の黄ページ**（行が明確に「某アクセラレータまたはモデル族の専用バックエンド / プラグイン」である場合のみ収録）；学習フレームワーク；純粋なベンチマーク表；OSS/ドキュメント実装のないマーケページ。
 
 **印：** ⭐ 成熟 / 広く採用 · ☄️ 上昇中 / 要ウォッチ  
@@ -47,6 +47,8 @@
 - [Hardware · エッジ NPU / モバイル](#hardware--エッジ-npu--モバイル)
 - [Hardware · その他アクセラレータプラグイン](#hardware--その他アクセラレータプラグイン)
 - [Model · モデル族専用 Runtime](#model--モデル族専用-runtime)
+- [Method · 階層 / 専用スケジューリング（Strata 系）](#method--階層--専用スケジューリングstrata-系)
+- [自社 · InferMatrixLab（第三者 Spec ではない）](#自社--infermatrixlab第三者-spec-ではない)
 - [Kernels · MoE / Attention 専用演算子](#kernels--moe--attention-専用演算子)
 - [Contrast · 汎用 Serving との境界](#contrast--汎用-serving-との境界)
 - [Related](#related)
@@ -135,11 +137,42 @@ NVIDIA GPU 向けの**コンパイル型 / ベンダー級** LLM およびグラ
 
 特定モデル構造（DeepSeek MoE、高圧縮量子化レイアウト、ハイブリッド専門家オフロードなど）向けに深くカスタムしたエンジン。
 
+> あわせて下方の [Method · 階層 / 専用スケジューリング（Strata 系）](#method--階層--専用スケジューリングstrata-系) を参照。
+
 | 印 | プロジェクト | 一言 | リンク |
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek 本番推論フレームワークの OSS；DeepSeek-V4.1-Flash、NVIDIA SM100 / Ascend 950 向け | https://github.com/deepseek-ai/DeepInfer |
 | ☄️ | **turboderp-org/exllamav3** | 現代のコンシューマ向け NVIDIA GPU 向け高速量子化 LLM 推論ライブラリ（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
 | ⭐ | **kvcache-ai/ktransformers** | CPU/GPU 混在の MoE / 大規模モデル推論最適化；エキスパートオフロードとカーネル経路を重視 | https://github.com/kvcache-ai/ktransformers |
+
+---
+
+## Method · 階層 / 専用スケジューリング（Strata 系）
+
+> **名称メモ：** 本リストで「Strata」は主に [Niko1221/Strata](https://github.com/Niko1221/Strata) を指す——特定の大規模 MoE（例: Qwen3.8-Flash-Next）向けに、**VRAM / システム RAM / SSD の階層**と**未キャッシュ専門家の CPU 並列計算**を行うコンシューマ PC 専用エンジン。同方法族には、より多くの MoE への一般化やホスト/SSD オフロード、CPU–GPU 協調も含む。同名リポジトリが複数ある場合は**下表のリンクと一文を優先**。
+
+| 印 | プロジェクト | 一文 | リンク |
+|---|---|---|---|
+| ⭐ | **Niko1221/Strata** | Qwen3.8-Flash-Next 系向けコンシューマ専用エンジン：GPU に稠密/ホット専門家、RAM に全専門家をピン留めし CPU がミスを並列計算、SSD が n-gram；CUDA/HIP | https://github.com/Niko1221/Strata |
+| ☄️ | **voidstackloop/extended-strata-moe** | Strata 式の非同期 GPU/CPU 専門家階層を llama.cpp 対応の多数 MoE に一般化（方法整合；初期リポジトリ） | https://github.com/voidstackloop/extended-strata-moe |
+| ☄️ | **EfficientMoE/MoE-Infinity** | MoE 専門家をホストメモリ/SSD へオフロードし、活性化対応キャッシュとプリフェッチを備える推論ライブラリ＋サービング | https://github.com/EfficientMoE/MoE-Infinity |
+| ☄️ | **efeslab/fiddler** | ICLR'25：ローカル機器向け MoE の CPU–GPU 協調（欠落専門家は重み転送ではなく CPU 計算） | https://github.com/efeslab/fiddler |
+
+---
+
+## 自社 · InferMatrixLab（第三者 Spec ではない）
+
+> **境界（必読）：** 以下は組織 **InferMatrixLab** が保守するモデル/ハードウェア**専用**推論エンジンとレシピ入口。組織内相互リンクと透明性のための掲載。**第三者の業界 Spec ではない**。「公式標準」や Hardware/Model 区のベンダー権威行として引用してはならない。上記の第三者キュレーションと**分表**。
+
+| 印 | プロジェクト | 一文 | リンク |
+|---|---|---|---|
+| ☄️ | **InferMatrixLab/system1-omni** | System1 モデル族向けコミュニティ保守の高性能推論エンジン（Rust；vLLM / vLLM-Omni スタイル） | https://github.com/InferMatrixLab/system1-omni |
+| ☄️ | **InferMatrixLab/vllm-rlt** | looped transformer 向け推論エンジン：loop レベル・スケジューリングと合成可能な段階実行 | https://github.com/InferMatrixLab/vllm-rlt |
+| ☄️ | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | MiniCPM-o 4.5 向け単一 GPU ストリーミング音声専用エンジン（vLLM-Omni / SGLang-Omni と比較可） | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+| ☄️ | **InferMatrixLab/vllm-omni-mlx** | Apple Silicon 上の全モダリティ推論サーバ（OpenAI / Anthropic 互換 API） | https://github.com/InferMatrixLab/vllm-omni-mlx |
+| ☄️ | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Ascend NPU（例: 910B）上の Qwen3-TTS 独立高速推論エンジン（RSI 経路） | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+| ☄️ | **InferMatrixLab/drama-3-single-b300-engine** | Fish Audio Drama 3 向け単一 NVIDIA B300 ストリーミング TTS 専用エンジン | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+| ☄️ | **InferMatrixLab/recipe** | 「モデル × エンジン × ハードウェア」のコミュニティ推論レシピ目録（汎用 serving 黄頁ではない） | https://github.com/InferMatrixLab/recipe |
 
 ---
 
@@ -167,6 +200,7 @@ NVIDIA GPU 向けの**コンパイル型 / ベンダー級** LLM およびグラ
 
 ## Related
 
+- **自社エンジン：** [自社 · InferMatrixLab](#自社--infermatrixlab第三者-spec-ではない)（組織プロジェクト、Spec ではない）
 - InferMatrixLab の他の推論エンジニアリング文書と比較（組織内で後続相互リンク）
 - 汎用 serving 選定は別の inference serving awesome / エンジニアリングハンドブックへ——本リポと表を混ぜない
 
