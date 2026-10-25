@@ -8,7 +8,7 @@
 > **模型 × 硬件专用推理引擎精选** · specialized backends · not a general serving yellow pages  
 > Curated list of **model/hardware-specialized inference engines** — engines and plugins whose value is tied to a **model family** and/or **accelerator**, not generic LLM serving stacks.
 
-**In scope（收）：** 面向特定芯片 / 运行时的编译型或内核级推理引擎；模型族专用 runtime（如 DeepSeek-class）；厂商 EP / 后端插件（Ascend、Neuron、TPU、Tenstorrent…）；边缘 NPU LLM 栈；MoE / attention 专用内核库（在「引擎层」可独立引用时）。  
+**In scope（收）：** 分层 / 混合 CPU–GPU 专家调度类专用引擎（Strata 方法族）；面向特定芯片 / 运行时的编译型或内核级推理引擎；模型族专用 runtime（如 DeepSeek-class）；厂商 EP / 后端插件（Ascend、Neuron、TPU、Tenstorrent…）；边缘 NPU LLM 栈；MoE / attention 专用内核库（在「引擎层」可独立引用时）。  
 **Out of scope（不收）：** vLLM / SGLang / TGI / Ollama 等**通用 serving 全家桶黄页**（仅当条目明确是「某加速器或模型族的专用后端 / 插件」时收录该行）；训练框架；纯基准榜；营销页无开源/无文档实现。
 
 **标记：** ⭐ 成熟 / 广泛采用 · ☄️ 上升中 / 值得盯  
@@ -47,6 +47,8 @@
 - [Hardware · 边缘 NPU / 移动](#hardware--边缘-npu--移动)
 - [Hardware · 其他加速器插件](#hardware--其他加速器插件)
 - [Model · 模型族专用 Runtime](#model--模型族专用-runtime)
+- [Method · 分层 / 专用调度引擎（Strata 类）](#method--分层--专用调度引擎strata-类)
+- [自有 · InferMatrixLab（非第三方 Spec）](#自有--infermatrixlab非第三方-spec)
 - [Kernels · MoE / Attention 专用算子](#kernels--moe--attention-专用算子)
 - [Contrast · 与通用 Serving 的边界](#contrast--与通用-serving-的边界)
 - [Related](#related)
@@ -135,11 +137,42 @@
 
 为特定模型结构（DeepSeek MoE、高压缩量化布局、混合专家卸载等）深度定制的引擎。
 
+> 另见下方 [Method · 分层 / 专用调度引擎（Strata 类）](#method--分层--专用调度引擎strata-类)。
+
 | 标记 | 项目 | 一句话 | 链接 |
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek 生产级推理框架开源版；绑 DeepSeek-V4.1-Flash，硬件为 NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 | ☄️ | **turboderp-org/exllamav3** | 面向现代消费级 NVIDIA GPU 的高速量化 LLM 推理库（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
 | ⭐ | **kvcache-ai/ktransformers** | 混合 CPU/GPU 的 MoE / 大模型推理优化框架；强调专家卸载与内核路径 | https://github.com/kvcache-ai/ktransformers |
+
+---
+
+## Method · 分层 / 专用调度引擎（Strata 类）
+
+> **命名说明：** 「Strata」在本仓主要指 [Niko1221/Strata](https://github.com/Niko1221/Strata)——为特定大 MoE（如 Qwen3.8-Flash-Next）在消费级 PC 上做的 **VRAM / 系统 RAM / SSD 分层 + CPU 并行计算未缓存专家** 的专用引擎。同方法族还包括将该思路泛化到更多 MoE、或做专家主机/SSD 卸载与 CPU–GPU 协同的实现。若 GitHub 上存在同名歧义项目，**以本表链接与一句话为准**。
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ⭐ | **Niko1221/Strata** | 面向 Qwen3.8-Flash-Next 等的消费级专用引擎：GPU 常驻稠密/热专家，RAM 钉住全专家并由 CPU 并行算未缓存专家，SSD 供 n-gram；CUDA/HIP 等 | https://github.com/Niko1221/Strata |
+| ☄️ | **voidstackloop/extended-strata-moe** | 将 Strata 式异步 GPU/CPU 专家分层泛化到 llama.cpp 支持的多架构 MoE（方法对齐；仓库仍早期） | https://github.com/voidstackloop/extended-strata-moe |
+| ☄️ | **EfficientMoE/MoE-Infinity** | MoE 专家卸载到主机内存/SSD + 激活感知缓存与预取的推理库与服务路径 | https://github.com/EfficientMoE/MoE-Infinity |
+| ☄️ | **efeslab/fiddler** | ICLR'25：本地设备上 MoE 的 CPU–GPU 协同编排（缺专家时在 CPU 算激活，而非搬权重） | https://github.com/efeslab/fiddler |
+
+---
+
+## 自有 · InferMatrixLab（非第三方 Spec）
+
+> **边界（必读）：** 以下为本组织 **InferMatrixLab** 维护的模型/硬件**专用**推理引擎与配方入口，仅供组织内互链与对外透明列出。**不是**第三方行业 Spec，也不得当作「官方标准」或 Hardware/Model 区的厂商权威条目引用。与上方第三方精选**分列**。
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ☄️ | **InferMatrixLab/system1-omni** | System1 模型族的社区维护式高性能推理引擎（Rust；vLLM / vLLM-Omni 风格） | https://github.com/InferMatrixLab/system1-omni |
+| ☄️ | **InferMatrixLab/vllm-rlt** | 面向 looped transformer 的推理引擎：loop 级调度与可组合阶段执行 | https://github.com/InferMatrixLab/vllm-rlt |
+| ☄️ | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | MiniCPM-o 4.5 单卡流式语音专用引擎（可对照 vLLM-Omni / SGLang-Omni） | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+| ☄️ | **InferMatrixLab/vllm-omni-mlx** | Apple Silicon 上的全模态推理服务（OpenAI / Anthropic 兼容 API） | https://github.com/InferMatrixLab/vllm-omni-mlx |
+| ☄️ | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Qwen3-TTS 在昇腾 NPU（如 910B）上的独立快速推理引擎（RSI 路径） | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+| ☄️ | **InferMatrixLab/drama-3-single-b300-engine** | Fish Audio Drama 3 在单卡 NVIDIA B300 上的流式 TTS 专用引擎 | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+| ☄️ | **InferMatrixLab/recipe** | 按「模型 × 引擎 × 硬件」整理的社区推理配方目录（非通用 serving 黄页） | https://github.com/InferMatrixLab/recipe |
 
 ---
 
@@ -167,6 +200,7 @@
 
 ## Related
 
+- **自有引擎：** 见上方 [自有 · InferMatrixLab](#自有--infermatrixlab非第三方-spec)（组织项目，非 Spec）
 - InferMatrixLab 其它推理工程文档与对比（本组织内后续互链）
 - 通用 serving 选型请另寻 inference serving awesome / 工程手册，避免与本仓混表
 
