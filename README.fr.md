@@ -155,6 +155,7 @@ Engines spécialisés Mixture-of-Experts : parallélisme d’experts, offload, o
 | ☄️ | **EfficientMoE/MoE-Infinity** | Offload d’experts MoE vers mémoire hôte/SSD + cache/prefetch aware activation | https://github.com/EfficientMoE/MoE-Infinity |
 | ☄️ | **efeslab/fiddler** | ICLR'25 : orchestration CPU–GPU MoE local (calculer les experts manquants sur CPU) | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | Inférence MoE / grands modèles hybride CPU/GPU ; offload d’experts & chemins kernels | https://github.com/kvcache-ai/ktransformers |
+| ⭐ | **Tiiny-AI/PowerInfer** | Engine hybride GPU+CPU grand public via localité d’activation (neurones chauds/froids) ; PowerInfer-2 Mixtral mobile ; ex-SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
 
 ### Cross-vendor kernels
 

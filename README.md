@@ -155,6 +155,7 @@
 | ☄️ | **EfficientMoE/MoE-Infinity** | MoE 专家卸载到主机内存/SSD + 激活感知缓存与预取的推理库与服务路径 | https://github.com/EfficientMoE/MoE-Infinity |
 | ☄️ | **efeslab/fiddler** | ICLR'25：本地设备上 MoE 的 CPU–GPU 协同编排（缺专家时在 CPU 算激活，而非搬权重） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | 混合 CPU/GPU 的 MoE / 大模型推理优化框架；强调专家卸载与内核路径 | https://github.com/kvcache-ai/ktransformers |
+| ⭐ | **Tiiny-AI/PowerInfer** | 消费级 GPU+CPU 混合推理：激活 locality（热/冷神经元）拆分；含 PowerInfer-2 端侧 Mixtral；原 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
 
 ### Cross-vendor kernels
 

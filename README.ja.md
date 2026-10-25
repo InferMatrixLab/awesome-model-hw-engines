@@ -155,6 +155,7 @@ Mixture-of-Experts 専用：エキスパート並列、オフロード、階層�
 | ☄️ | **EfficientMoE/MoE-Infinity** | MoE エキスパートをホストメモリ/SSD へオフロード＋活性化アウェアキャッシュ/プリフェッチ | https://github.com/EfficientMoE/MoE-Infinity |
 | ☄️ | **efeslab/fiddler** | ICLR'25：ローカル MoE の CPU–GPU 協調（欠落エキスパートを CPU で計算し重み移送を避ける） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | ハイブリッド CPU/GPU の MoE / 大規模モデル推論最適化；エキスパートオフロードとカーネル経路 | https://github.com/kvcache-ai/ktransformers |
+| ⭐ | **Tiiny-AI/PowerInfer** | コンシューマ GPU+CPU ハイブリッド：活性化 locality（ホット/コールドニューロン）；PowerInfer-2 で端末 Mixtral；旧 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
 
 ### Cross-vendor kernels
 

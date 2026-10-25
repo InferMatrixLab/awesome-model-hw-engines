@@ -155,6 +155,7 @@ Mixture-of-Experts 전용: 전문가 병렬, 오프로드, 계층 스케줄링, 
 | ☄️ | **EfficientMoE/MoE-Infinity** | MoE 전문가를 호스트 메모리/SSD로 오프로드+활성화 인지 캐시/프리페치 | https://github.com/EfficientMoE/MoE-Infinity |
 | ☄️ | **efeslab/fiddler** | ICLR'25: 로컬 MoE CPU–GPU 조율（누락 전문가를 CPU에서 계산） | https://github.com/efeslab/fiddler |
 | ⭐ | **kvcache-ai/ktransformers** | 하이브리드 CPU/GPU MoE/대형 모델 추론 최적화; 전문가 오프로드·커널 경로 | https://github.com/kvcache-ai/ktransformers |
+| ⭐ | **Tiiny-AI/PowerInfer** | 소비자 GPU+CPU 하이브리드: activation locality(핫/콜드 뉴런); PowerInfer-2 온디바이스 Mixtral; 구 SJTU-IPADS | https://github.com/Tiiny-AI/PowerInfer |
 
 ### Cross-vendor kernels
 
