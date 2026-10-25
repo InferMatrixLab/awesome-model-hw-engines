@@ -144,6 +144,12 @@ Engines especializados Mixture-of-Experts: paralelismo de expertos, offload, pla
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | Igual; ruta Ascend 950 (doble hardware con NVIDIA SM100) | https://github.com/deepseek-ai/DeepInfer |
 
+### Apple-Metal
+
+| Marca | Proyecto | En una línea | Enlace |
+|---|---|---|---|
+| ☄️ | **incoai/splash** | Engine local Apple Silicon (extremo vs mlx-serve): decodificación especulativa DFlash + SSD expert offload + prefix cache; MoE clase Qwen Flash-Next | https://github.com/incoai/splash |
+
 ### CPU-RAM-SSD tier
 
 > **Clase Strata:** aquí, «Strata» significa sobre todo [Niko1221/Strata](https://github.com/Niko1221/Strata) — engine de PC de consumo para MoE grandes (p. ej. Qwen3.8-Flash-Next) con **niveles VRAM / RAM de sistema / SSD** y **CPU calculando en paralelo expertos no cacheados**. Misma familia: generalizaciones MoE, offload host/SSD, orquestación CPU–GPU. Si hay homónimos, **confiar en los enlaces y one-liners de abajo**.
