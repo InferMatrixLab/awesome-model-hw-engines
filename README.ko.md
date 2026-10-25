@@ -64,6 +64,12 @@
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 공식 LLM/VLM 추론 엔진: 커스텀 CUDA 커널, 엔진 빌드, IB 배칭; NVIDIA GPU | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 현대 소비자 NVIDIA GPU용 고속 양자화 LLM 추론（ExLlama 계열） | https://github.com/turboderp-org/exllamav3 |
 
+### NVIDIA · RTX / Blackwell (SM120)
+
+| 표기 | 프로젝트 | 한 줄 | 링크 |
+|---|---|---|---|
+| ☄️ | **NVIDIA/flare-local-inference** | 로컬 Agent 추론: PyTorch 빌드 + Rust 서빙; 전체 대화 상태(KV + recurrent); NVIDIA SM120/SM121; 연구 프로토타입(vLLM 대체 아님) | https://github.com/NVIDIA/flare-local-inference |
+
 ### Ascend
 
 | 표기 | 프로젝트 | 한 줄 | 링크 |
