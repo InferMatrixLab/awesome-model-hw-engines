@@ -64,6 +64,12 @@
 | ⭐ | **NVIDIA/TensorRT-LLM** | NVIDIA 官方 LLM/VLM 推理引擎：自定义 CUDA 内核、引擎构建、IB 批处理；绑 NVIDIA GPU | https://github.com/NVIDIA/TensorRT-LLM |
 | ☄️ | **turboderp-org/exllamav3** | 面向现代消费级 NVIDIA GPU 的高速量化 LLM 推理库（ExLlama 系） | https://github.com/turboderp-org/exllamav3 |
 
+### NVIDIA · RTX / Blackwell (SM120)
+
+| 标记 | 项目 | 一句话 | 链接 |
+|---|---|---|---|
+| ☄️ | **NVIDIA/flare-local-inference** | 本地 Agent 推理：PyTorch 构建 + Rust 服务；完整对话状态（KV + 循环）；绑 NVIDIA SM120/SM121；研究原型，不替代 vLLM | https://github.com/NVIDIA/flare-local-inference |
+
 ### Ascend
 
 | 标记 | 项目 | 一句话 | 链接 |
