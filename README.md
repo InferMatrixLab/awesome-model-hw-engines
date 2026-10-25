@@ -3,7 +3,7 @@
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**Languages:** [中文](README.md) · English（稍后）· 日本語 / 한국어 / Français / Español（规划中）
+**Languages:** [English](README.en.md) · [中文](README.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Français](README.fr.md) · [Español](README.es.md)
 
 > **模型 × 硬件专用推理引擎精选** · specialized backends · not a general serving yellow pages  
 > Curated list of **model/hardware-specialized inference engines** — engines and plugins whose value is tied to a **model family** and/or **accelerator**, not generic LLM serving stacks.
@@ -13,7 +13,7 @@
 
 **标记：** ⭐ 成熟 / 广泛采用 · ☄️ 上升中 / 值得盯  
 **结构：** Method Family × Hardware Domain  
-**语言：** 中文说明为主；项目名与链接保留英文。English README 后续补。
+**语言：** 中文说明为主；另有 [English](README.en.md) / [日本語](README.ja.md) / [한국어](README.ko.md) / [Français](README.fr.md) / [Español](README.es.md)；项目名与链接保留英文。
 
 ### 专用引擎 ≠ 通用 Serving（先读）
 
