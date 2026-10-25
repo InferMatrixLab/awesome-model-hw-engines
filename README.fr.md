@@ -8,7 +8,7 @@
 > **Moteurs d'inférence spécialisés modèle × matériel** · specialized backends · not a general serving yellow pages  
 > Liste curatée de **moteurs d'inférence spécialisés modèle/matériel** — moteurs et plugins dont la valeur est liée à une **famille de modèles** et/ou un **accélérateur**, pas des stacks de serving LLM génériques.
 
-**Dans le périmètre :** moteurs d'inférence compile-time ou au niveau kernel pour puces / runtimes spécifiques ; runtimes spécialisés par famille de modèles (ex. classe DeepSeek) ; plugins EP / backend vendeur (Ascend, Neuron, TPU, Tenstorrent…) ; stacks LLM NPU edge ; bibliothèques de kernels MoE / attention (citables comme « couche moteur »).  
+**Dans le périmètre :** moteurs spécialisés à ordonnancement d’experts stratifié / hybride CPU–GPU（famille de méthodes Strata）；moteurs d'inférence compile-time ou au niveau kernel pour puces / runtimes spécifiques ; runtimes spécialisés par famille de modèles (ex. classe DeepSeek) ; plugins EP / backend vendeur (Ascend, Neuron, TPU, Tenstorrent…) ; stacks LLM NPU edge ; bibliothèques de kernels MoE / attention (citables comme « couche moteur »).  
 **Hors périmètre :** pages jaunes de megapacks serving génériques (vLLM / SGLang / TGI / Ollama) — n'inclure une ligne que si c'est clairement un **backend / plugin spécifique accélérateur ou famille de modèles** ; frameworks d'entraînement ; tableaux de benchmarks purs ; pages marketing sans implémentation OSS/docs.
 
 **Marques :** ⭐ Établi / largement adopté · ☄️ En hausse / à surveiller  
@@ -47,6 +47,8 @@
 - [Hardware · NPU edge / mobile](#hardware--npu-edge--mobile)
 - [Hardware · Autres plugins accélérateurs](#hardware--autres-plugins-accélérateurs)
 - [Model · Runtime spécialisé famille de modèles](#model--runtime-spécialisé-famille-de-modèles)
+- [Method · Ordonnancement stratifié / spécialisé（classe Strata）](#method--ordonnancement-stratifié--spécialiséclasse-strata)
+- [Propre · InferMatrixLab（pas une Spec tierce）](#propre--infermatrixlabpas-une-spec-tierce)
 - [Kernels · Ops spécialisées MoE / Attention](#kernels--ops-spécialisées-moe--attention)
 - [Contrast · Frontière vs Serving générique](#contrast--frontière-vs-serving-générique)
 - [Related](#related)
@@ -135,11 +137,42 @@ Backends et plugins spécialisés sur Ascend et NPU similaires (le cœur vLLM g�
 
 Moteurs profondément custom pour des structures de modèles spécifiques (DeepSeek MoE, layouts quantifiés haute compression, offload d'experts hybride, etc.).
 
+> Voir aussi [Method · Ordonnancement stratifié / spécialisé（classe Strata）](#method--ordonnancement-stratifié--spécialiséclasse-strata) plus bas.
+
 | Marque | Projet | En une phrase | Lien |
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | Framework d'inférence production DeepSeek (OSS) ; lié à DeepSeek-V4.1-Flash sur NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 | ☄️ | **turboderp-org/exllamav3** | Inférence LLM quantifiée haute vitesse pour GPU NVIDIA grand public modernes (ligne ExLlama) | https://github.com/turboderp-org/exllamav3 |
 | ⭐ | **kvcache-ai/ktransformers** | Framework d'inférence MoE / grands modèles hybride CPU/GPU ; offload d'experts & chemins kernels | https://github.com/kvcache-ai/ktransformers |
+
+---
+
+## Method · Ordonnancement stratifié / spécialisé（classe Strata）
+
+> **Note de nommage :** Ici, « Strata » désigne surtout [Niko1221/Strata](https://github.com/Niko1221/Strata) — un moteur **spécialisé modèle** pour grands MoE（ex. Qwen3.8-Flash-Next）sur PC grand public, avec **tiers VRAM / RAM système / SSD** et **CPU calculant en parallèle les experts non mis en cache**. La même famille de méthodes couvre les généralisations à d’autres MoE, l’offload hôte/SSD et l’orchestration CPU–GPU. En cas d’homonymes, **les liens et une-lignes ci-dessous font foi**.
+
+| Marque | Projet | Une ligne | Lien |
+|---|---|---|---|
+| ⭐ | **Niko1221/Strata** | Moteur grand public pour MoE type Qwen3.8-Flash-Next : experts denses/chauds sur GPU, tous les experts épinglés en RAM avec calcul CPU parallèle des ratés, n-gram sur SSD ; CUDA/HIP | https://github.com/Niko1221/Strata |
+| ☄️ | **voidstackloop/extended-strata-moe** | Généralise le tiering async GPU/CPU style Strata à de nombreuses architectures MoE llama.cpp (aligné méthode ; dépôt encore jeune) | https://github.com/voidstackloop/extended-strata-moe |
+| ☄️ | **EfficientMoE/MoE-Infinity** | Offload d’experts MoE vers mémoire hôte/SSD + cache et prefetch sensibles à l’activation ; bibliothèque + chemin de service | https://github.com/EfficientMoE/MoE-Infinity |
+| ☄️ | **efeslab/fiddler** | ICLR'25 : orchestration CPU–GPU pour MoE local (experts manquants calculés sur CPU plutôt que transfert de poids) | https://github.com/efeslab/fiddler |
+
+---
+
+## Propre · InferMatrixLab（pas une Spec tierce）
+
+> **Frontière（obligatoire）:** Lignes ci-dessous = moteurs et recettes **spécialisés** modèle/matériel maintenus par **InferMatrixLab**, pour liens internes et transparence. **Ce n’est pas** une Spec industrielle tierce et **ne doit pas** être cité comme « norme officielle » ni comme ligne d’autorité Hardware/Model. **Séparé** des lignes tierces ci-dessus.
+
+| Marque | Projet | Une ligne | Lien |
+|---|---|---|---|
+| ☄️ | **InferMatrixLab/system1-omni** | Moteur d’inférence haute perf. maintenu par la communauté pour la famille System1 (Rust ; style vLLM / vLLM-Omni) | https://github.com/InferMatrixLab/system1-omni |
+| ☄️ | **InferMatrixLab/vllm-rlt** | Moteur pour transformers bouclés : ordonnancement au niveau loop et étapes composables | https://github.com/InferMatrixLab/vllm-rlt |
+| ☄️ | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | Moteur vocal streaming mono-GPU spécialisé MiniCPM-o 4.5 (comparable à vLLM-Omni / SGLang-Omni) | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+| ☄️ | **InferMatrixLab/vllm-omni-mlx** | Serveur d’inférence omni-modalité sur Apple Silicon (API compatible OpenAI / Anthropic) | https://github.com/InferMatrixLab/vllm-omni-mlx |
+| ☄️ | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Inférence Qwen3-TTS autonome rapide sur NPU Ascend (ex. 910B) via chemin RSI | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+| ☄️ | **InferMatrixLab/drama-3-single-b300-engine** | Moteur TTS streaming spécialisé Fish Audio Drama 3 sur un seul NVIDIA B300 | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+| ☄️ | **InferMatrixLab/recipe** | Catalogue communautaire de recettes « modèle × moteur × matériel » (pas un annuaire serving générique) | https://github.com/InferMatrixLab/recipe |
 
 ---
 
@@ -167,6 +200,7 @@ Moteurs profondément custom pour des structures de modèles spécifiques (DeepS
 
 ## Related
 
+- **Moteurs propres :** voir [Propre · InferMatrixLab](#propre--infermatrixlabpas-une-spec-tierce)（projets org, pas Spec）
 - Autres docs et comparaisons d'ingénierie d'inférence InferMatrixLab (liens croisés dans l'org plus tard)
 - Pour le choix de serving générique, utiliser un awesome / manuel séparé — ne pas mélanger les tableaux avec ce dépôt
 
