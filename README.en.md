@@ -8,7 +8,7 @@
 > **Curated model × hardware specialized inference engines** · specialized backends · not a general serving yellow pages  
 > A curated list of **model/hardware-specialized inference engines** — engines and plugins whose value is tied to a **model family** and/or **accelerator**, not generic LLM serving stacks.
 
-**In scope:** Compile-time or kernel-level inference engines for specific chips / runtimes; model-family-specialized runtimes (e.g. DeepSeek-class); vendor EP / backend plugins (Ascend, Neuron, TPU, Tenstorrent…); edge NPU LLM stacks; MoE / attention specialized kernel libraries (when citable as an “engine layer”).  
+**In scope:** stratified / hybrid CPU–GPU expert-scheduling specialized engines (Strata method family); Compile-time or kernel-level inference engines for specific chips / runtimes; model-family-specialized runtimes (e.g. DeepSeek-class); vendor EP / backend plugins (Ascend, Neuron, TPU, Tenstorrent…); edge NPU LLM stacks; MoE / attention specialized kernel libraries (when citable as an “engine layer”).  
 **Out of scope:** Generic serving megapack yellow pages such as vLLM / SGLang / TGI / Ollama (include a row only when it is clearly a **hardware- or model-family-specific backend / plugin**); training frameworks; pure benchmark boards; marketing pages with no OSS/docs implementation.
 
 **Markers:** ⭐ Established / widely adopted · ☄️ Rising / watchlist  
@@ -47,6 +47,8 @@
 - [Hardware · Edge NPU / mobile](#hardware--edge-npu--mobile)
 - [Hardware · Other accelerator plugins](#hardware--other-accelerator-plugins)
 - [Model · Model-family specialized Runtime](#model--model-family-specialized-runtime)
+- [Method · Stratified / specialized scheduling (Strata-class)](#method--stratified--specialized-scheduling-strata-class)
+- [First-party · InferMatrixLab (not third-party Spec)](#first-party--infermatrixlab-not-third-party-spec)
 - [Kernels · MoE / Attention specialized ops](#kernels--moe--attention-specialized-ops)
 - [Contrast · Boundary vs generic Serving](#contrast--boundary-vs-generic-serving)
 - [Related](#related)
@@ -135,11 +137,42 @@ Specialized backends and plugins on Ascend and similar NPUs (generic vLLM core i
 
 Engines deeply customized for specific model structures (DeepSeek MoE, high-compression quantized layouts, hybrid expert offload, etc.).
 
+> See also [Method · Stratified / specialized scheduling (Strata-class)](#method--stratified--specialized-scheduling-strata-class) below.
+
 | Mark | Project | One-liner | Link |
 |---|---|---|---|
 | ⭐ | **deepseek-ai/DeepInfer** | DeepSeek production inference framework (OSS); tied to DeepSeek-V4.1-Flash on NVIDIA SM100 / Ascend 950 | https://github.com/deepseek-ai/DeepInfer |
 | ☄️ | **turboderp-org/exllamav3** | High-speed quantized LLM inference for modern consumer NVIDIA GPUs (ExLlama line) | https://github.com/turboderp-org/exllamav3 |
 | ⭐ | **kvcache-ai/ktransformers** | Hybrid CPU/GPU MoE / large-model inference framework; expert offload & kernel paths | https://github.com/kvcache-ai/ktransformers |
+
+---
+
+## Method · Stratified / specialized scheduling (Strata-class)
+
+> **Naming note:** In this list, “Strata” primarily means [Niko1221/Strata](https://github.com/Niko1221/Strata) — a **model-specialized** consumer-PC engine for large MoEs (e.g. Qwen3.8-Flash-Next) with **VRAM / system RAM / SSD tiers** and **CPU computing uncached experts in parallel**. The same method family includes generalizations to more MoEs and expert host/SSD offload or CPU–GPU orchestration. If other same-named repos appear, **trust the links and one-liners below**.
+
+| Mark | Project | One-liner | Link |
+|---|---|---|---|
+| ⭐ | **Niko1221/Strata** | Consumer specialized engine for Qwen3.8-Flash-Next-class MoEs: dense/hot experts on GPU, all experts pinned in RAM with CPU parallel compute for misses, SSD n-gram; CUDA/HIP | https://github.com/Niko1221/Strata |
+| ☄️ | **voidstackloop/extended-strata-moe** | Generalizes Strata-style async GPU/CPU expert tiering across many llama.cpp MoE architectures (method-aligned; early repo) | https://github.com/voidstackloop/extended-strata-moe |
+| ☄️ | **EfficientMoE/MoE-Infinity** | MoE expert offload to host memory/SSD with activation-aware cache and prefetch; library + serving path | https://github.com/EfficientMoE/MoE-Infinity |
+| ☄️ | **efeslab/fiddler** | ICLR'25: CPU–GPU orchestration for local MoE (compute missing experts on CPU instead of shipping weights) | https://github.com/efeslab/fiddler |
+
+---
+
+## First-party · InferMatrixLab (not third-party Spec)
+
+> **Boundary (required):** Rows below are **InferMatrixLab**-maintained model/hardware-**specialized** engines and recipe entrypoints, listed for org cross-links and transparency. They are **not** third-party industry Spec and must **not** be cited as “official standards” or vendor-authority rows in Hardware/Model sections. Kept **separate** from third-party curated rows above.
+
+| Mark | Project | One-liner | Link |
+|---|---|---|---|
+| ☄️ | **InferMatrixLab/system1-omni** | Community-maintained high-performance inference engine for System1 model family (Rust; vLLM / vLLM-Omni style) | https://github.com/InferMatrixLab/system1-omni |
+| ☄️ | **InferMatrixLab/vllm-rlt** | Inference engine for looped transformers: loop-level scheduling across composable stages | https://github.com/InferMatrixLab/vllm-rlt |
+| ☄️ | **InferMatrixLab/minicpm-o-4.5-single-gpu-engine** | Single-GPU streaming speech engine specialized for MiniCPM-o 4.5 (comparable to vLLM-Omni / SGLang-Omni) | https://github.com/InferMatrixLab/minicpm-o-4.5-single-gpu-engine |
+| ☄️ | **InferMatrixLab/vllm-omni-mlx** | Omni-modality inference server on Apple Silicon (OpenAI / Anthropic-compatible API) | https://github.com/InferMatrixLab/vllm-omni-mlx |
+| ☄️ | **InferMatrixLab/qwen3-tts-rsi-npu-engine** | Standalone fast Qwen3-TTS inference on Ascend NPU (e.g. 910B) via RSI path | https://github.com/InferMatrixLab/qwen3-tts-rsi-npu-engine |
+| ☄️ | **InferMatrixLab/drama-3-single-b300-engine** | Streaming TTS engine specialized for Fish Audio Drama 3 on a single NVIDIA B300 | https://github.com/InferMatrixLab/drama-3-single-b300-engine |
+| ☄️ | **InferMatrixLab/recipe** | Community catalog of “model × engine × hardware” inference recipes (not a generic serving yellow pages) | https://github.com/InferMatrixLab/recipe |
 
 ---
 
@@ -167,6 +200,7 @@ Engines deeply customized for specific model structures (DeepSeek MoE, high-comp
 
 ## Related
 
+- **First-party engines:** see [First-party · InferMatrixLab](#first-party--infermatrixlab-not-third-party-spec) (org projects, not Spec)
 - Other InferMatrixLab inference engineering docs and comparisons (cross-links within the org later)
 - For generic serving selection, use a separate inference-serving awesome / engineering handbook—do not mix tables with this repo
 
